@@ -3,7 +3,7 @@ const User = require("../models/User");
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
-    res.json({ users });
+    res.json(users);
   } catch (error) {
     console.log(error);
     res.json(error);
@@ -14,7 +14,7 @@ const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (user) {
-      res.json({ user: user });
+      res.json(user);
     } else {
       res.json({ message: "User doesn't exist" });
     }
@@ -106,6 +106,31 @@ const addFriend = async (req, res) => {
   }
 };
 
+const deleteFriend = async (req, res) => {
+  try {
+    const { userId, friendId } = req.params;
+    const user = await User.findById(userId);
+
+    if (user) {
+      if (user.friends.includes(friendId)) {
+        const idx = user.friends.indexOf(friendId);
+        if (idx >= 0) {
+          user.friends.splice(idx, 1);
+          const updatedUser = await user.save();
+          res.json(updatedUser);
+        }
+      } else {
+        res.json({ message: "Friend isnt present in the list" });
+      }
+    } else {
+      res.json({ message: "No user found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -113,4 +138,5 @@ module.exports = {
   updateUser,
   deleteUser,
   addFriend,
+  deleteFriend,
 };

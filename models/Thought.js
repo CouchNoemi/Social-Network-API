@@ -57,6 +57,7 @@ const thoughtSchema = new Schema(
       virtuals: true,
       getters: true,
     },
+    id: false,
   }
 );
 

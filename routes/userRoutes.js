@@ -5,6 +5,7 @@ const {
   updateUser,
   deleteUser,
   addFriend,
+  deleteFriend,
 } = require("../controllers/userController");
 
 const router = require("express").Router();
@@ -28,5 +29,8 @@ router.delete("/:id", deleteUser);
 
 // add friend to users friend list
 router.post("/:userId/friends/:friendId", addFriend);
+
+// delete a friend 
+router.delete("/:userId/friends/:friendId", deleteFriend);
 
 module.exports = router;
